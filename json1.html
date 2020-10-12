@@ -38,26 +38,26 @@
     </table>
 </body>
 <script>
-    var JSONObj = [{ firstname: "Rohit", lastname: "Kapoor", dob: "01/01/1996", id: 1 },
-    { firstname: "Mohit", lastname: "Verma", dob: "01/01/1998", id: 2 },
-    { firstname: "Sidhant", lastname: "Malhotra", dob: "01/01/1995", id: 3 }
-    ];
+    var JSONObj=[
+                    { "firstname": "Rohit", "lastname": "Kapoor", "dob": "01/01/1996", "id": 1 },
+                    { "firstname": "Mohit", "lastname": "Verma", "dob": "01/01/1998", "id": 2 },
+                    { "firstname": "Sidhant", "lastname": "Malhotra", "dob": "01/01/1995", "id": 3 }
+                ]
     var body = document.getElementsByTagName("body")[0];
     var table = document.getElementById("table");
-    for (var i = 0; i < 3; i++) {
+    for (var i = 0; i < JSONObj.length; i++) {
         var row = table.insertRow();
 
-        var cell_1 = row.insertCell(0);
+        var cell_1 = row.insertCell();
         cell_1.innerHTML = JSONObj[i].id;
 
-        console.log(JSONObj[i])
-        var cell_2 = row.insertCell(1);
+        var cell_2 = row.insertCell();
         cell_2.innerHTML = JSONObj[i].firstname;
 
-        var cell_3 = row.insertCell(2);
+        var cell_3 = row.insertCell();
         cell_3.innerHTML = JSONObj[i].lastname;
 
-        var cell_4 = row.insertCell(3);
+        var cell_4 = row.insertCell();
         cell_4.innerHTML = JSONObj[i].dob;
     }
     body.appendChild(table);
