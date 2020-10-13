@@ -4,10 +4,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title> JSON 2</title>
     <style>
-        form {
+        #userform {
             margin-left: 720px;
             margin-bottom: 50px;
             margin-top: 40px;
+        }
+
+        #search {
+            margin-left: 720px;
+            margin-bottom: 50px;
+            margin-top: 0.8em;
+            font-size: large;
         }
 
         #table {
@@ -37,8 +44,6 @@
 
 <body>
     <div>
-
-
         <form id="userform">
             <label for="">First Name : </label>
             <input type="text" name="firstname" id="firstname" required><br><br>
@@ -52,12 +57,16 @@
             <button onclick="sortTable(2)">Sort By Last Name</button>
         </form>
 
+        <input type="text" name="Search" id="search" placeholder="Search for Names..." onkeyup="userSearch()"><br><br>
+
         <table id="table">
             <tr>
                 <th>ID</th>
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>DOB</th>
+                <th>Age</th>
+                <th>Action </th>
             </tr>
         </table>
     </div>
@@ -120,20 +129,36 @@
             dob.textContent = "DOB";
             table.appendChild(dob);
 
+            const age = document.createElement("th");
+            age.textContent = "Age";
+            table.appendChild(age);
+
+            const action = document.createElement("th");
+            action.textContent = "Action";
+            table.appendChild(action);
+
             for (let i = 0; i < Users.length; i++) {
-                var row = table.insertRow();
+                let row = table.insertRow();
 
-                var cell = row.insertCell();
-                cell.innerHTML = Users[i].id;
+                let cell1 = row.insertCell();
+                cell1.innerHTML = Users[i].id;
 
-                var cell = row.insertCell();
-                cell.innerHTML = Users[i].firstname;
+                let cell2 = row.insertCell();
+                cell2.innerHTML = Users[i].firstname;
 
-                var cell = row.insertCell();
-                cell.innerHTML = Users[i].lastname;
+                let cell3 = row.insertCell();
+                cell3.innerHTML = Users[i].lastname;
 
-                var cell = row.insertCell();
-                cell.innerHTML = Users[i].dob
+                let cell4 = row.insertCell();
+                cell4.innerHTML = Users[i].dob
+
+                let cell5 = row.insertCell();
+                cell5.innerHTML = calculateAge(new Date(Users[i].dob), new Date())
+
+                let cell6 = row.insertCell();
+
+                cell6.setAttribute("id", i);
+                cell6.innerHTML = `<button onclick=deleteUser(${i})>DELETE</button>`;
             }
             body.appendChild(table);
         }
@@ -174,6 +199,116 @@
                 if (switchcount == 0 && dir == "asc") {
                     dir = "desc";
                     switching = true;
+                }
+            }
+        }
+    }
+
+    function calculateAge(dateOfBirth, dateToday) {
+        let todayYear = dateToday.getFullYear();
+        let todayMonth = dateToday.getMonth();
+        let todayDay = dateToday.getDate();
+
+        let birthYear = dateOfBirth.getFullYear();
+        let birthMonth = dateOfBirth.getMonth();
+        let birthDay = dateOfBirth.getDate();
+
+        let ageYear = todayYear - birthYear;
+        let ageMonth = todayMonth - birthMonth;
+        let ageDay = todayDay - birthDay;
+
+        if (ageMonth < 0 || (ageMonth == 0 && ageDay < 0)) {
+            ageYear = parseInt(ageYear) - 1;
+        }
+        if (ageMonth < 0) {
+            ageMonth = parseInt(ageMonth) + 12;
+        }
+        age = ageYear + " Years and " + ageMonth + " Months";
+
+        return age;
+    }
+
+    function deleteUser(id) {
+        if (window.confirm("Do you really want to Delete?")) {
+            Users.splice(id, 1);
+            document.getElementById("userform").reset;
+            document.getElementById("search").value = "";
+            reGenerateTable();
+        }
+    }
+
+    function reGenerateTable() {
+        document.getElementById("userform").reset();
+        document.getElementById("table").remove();
+
+        const table = document.createElement("table");
+        table.setAttribute("id", "table");
+
+        const id = document.createElement("th");
+        id.textContent = "ID";
+        table.appendChild(id);
+
+        const fName = document.createElement("th");
+        fName.textContent = "First Name";
+        table.appendChild(fName);
+
+        const lName = document.createElement("th");
+        lName.textContent = "Last Name";
+        table.appendChild(lName);
+
+        const dob = document.createElement("th");
+        dob.textContent = "DOB";
+        table.appendChild(dob);
+
+        const age = document.createElement("th");
+        age.textContent = "Age";
+        table.appendChild(age);
+
+        const action = document.createElement("th");
+        action.textContent = "Action";
+        table.appendChild(action);
+
+        for (let i = 0; i < Users.length; i++) {
+            let row = table.insertRow();
+
+            let cell1 = row.insertCell();
+            cell1.innerHTML = Users[i].id;
+
+            let cell2 = row.insertCell();
+            cell2.innerHTML = Users[i].firstname;
+
+            let cell3 = row.insertCell();
+            cell3.innerHTML = Users[i].lastname;
+
+            let cell4 = row.insertCell();
+            cell4.innerHTML = Users[i].dob
+
+            let cell5 = row.insertCell();
+            cell5.innerHTML = calculateAge(new Date(Users[i].dob), new Date())
+
+            let cell6 = row.insertCell();
+
+            cell6.setAttribute("id", i);
+            cell6.innerHTML = `<button onclick=deleteUser(${i})>DELETE</button>`;
+
+        }
+        body.appendChild(table);
+    }
+
+    function userSearch() {
+        var input = document.getElementById("search");
+        var value = input.value.toUpperCase();
+        var table = document.getElementById("table");
+        var tablerow = table.getElementsByTagName("tr");
+        for (var i = 0; i < tablerow.length; i++) {
+            var tablecell = tablerow[i].getElementsByTagName("td")[1];
+            if (tablecell) {
+                var celldata = tablecell.textContent || tablecell.innerText;
+                if (celldata.toUpperCase().indexOf(value) > -1) {
+                    tablerow[i].style.display = "";
+                }
+                else {
+                    tablerow[i].style.display = "none";
                 }
             }
         }
