@@ -1,0 +1,66 @@
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title> JSON 1</title>
+    <style>
+        #table {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        tr:nth-child(odd) {
+            background-color: #eee;
+        }
+
+        th {
+            background-color: #555;
+            color: #fff;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 0.5em 1em;
+        }
+    </style>
+
+</head>
+
+<body>
+    <table id="table">
+        <tr>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>DOB</th>
+        </tr>
+    </table>
+</body>
+<script>
+    var JSONObj=[
+                    { "firstname": "Rohit", "lastname": "Kapoor", "dob": "01/01/1996", "id": 1 },
+                    { "firstname": "Mohit", "lastname": "Verma", "dob": "01/01/1998", "id": 2 },
+                    { "firstname": "Sidhant", "lastname": "Malhotra", "dob": "01/01/1995", "id": 3 }
+                ]
+    var body = document.getElementsByTagName("body")[0];
+    var table = document.getElementById("table");
+    for (var i = 0; i < JSONObj.length; i++) {
+        var row = table.insertRow();
+
+        var cell_1 = row.insertCell();
+        cell_1.innerHTML = JSONObj[i].id;
+
+        var cell_2 = row.insertCell();
+        cell_2.innerHTML = JSONObj[i].firstname;
+
+        var cell_3 = row.insertCell();
+        cell_3.innerHTML = JSONObj[i].lastname;
+
+        var cell_4 = row.insertCell();
+        cell_4.innerHTML = JSONObj[i].dob;
+    }
+    body.appendChild(table);
+</script>
+
+</html>
